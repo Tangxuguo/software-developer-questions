@@ -4,6 +4,9 @@
 #前言
 做这个总结的原因是因为看到了markyun的[前端开发面试题](https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions)，索性就把后端开发的也总结一下吧
 
+[看全部问题和答案点这里](https://github.com/Tangxuguo/software-developer-questions/blob/master/answers.md)
+
+
 #后端开发面试知识点大纲：
 	语言类（C++）：
 		关键字作用解释：
@@ -52,6 +55,7 @@
 	数据结构算法：
 		链表、树、哈希表、有效避免hash结果值的碰撞
 		排序算法性能比较
+		大数据的几个解决问题
 		
 	操作系统：
 		linux的内存管理机制，内存寻址方式，什么叫虚拟内存，内存调页算法，任务调度算法、
@@ -92,6 +96,7 @@
 		关系型数据库和非关系数据库的特点，
 		乐观锁与悲观锁的区别，
 		数据库范式
+		聚集索引和非聚集索引
 	
 	海量数据处理：
 		bitmap
