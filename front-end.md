@@ -765,6 +765,262 @@ setTimeout(function() {
 console.log('three');
 ```
 
+## [前端工作面试 JS 相关问题](https://github.com/darcyclarke/Front-end-Developer-Interview-Questions#js)
+
+* Q：解释下事件代理。
+
+  A: 当我们需要对很多元素添加事件的时候，可以通过将事件添加到它们的父节点而将事件委托给父节点来触发处理函数。这主要得益于浏览器的事件冒泡机制。
+
+  ```
+    var delegate = function(client, clientMethod) {
+        return function() {
+            return clientMethod.apply(client, arguments);
+        }
+    }
+
+    var agentMethod = delegate (client, clientMethod);
+    agentMethod();
+  ```
+
+  相关阅读：
+   - [JavaScript事件代理和委托（Delegation）](http://www.cnblogs.com/owenChen/archive/2013/02/18/2915521.html)
+   - [事件代理](http://www.cnblogs.com/owenChen/archive/2013/02/18/2915521.html)
+   - [事件代理的应用](http://tangram.baidu.com/article/138)
+
+* Q: 解释下 JavaScript 中 `this` 是如何工作的。
+
+
+  A: `this` 在 JavaScript 中主要由以下五种使用场景。
+
+   - 作为函数调用，`this` 绑定全局对象，浏览器环境全局对象为 window 。
+    * 内部函数内部函数的 `this` 也绑定全局对象，应该绑定到其外层函数对应的对象上，这是 JavaScript的缺陷，用`that`替换。
+   - 作为构造函数使用，`this` 绑定到新创建的对象。
+   - 作为对象方法使用，`this` 绑定到该对象。
+   - 使用`apply`或`call`调用 `this` 将会被显式设置为函数调用的第一个参数。
+
+   参考阅读：
+    - [深入浅出 JavaScript 中的 this](http://www.ibm.com/developerworks/cn/web/1207_wangqf_jsthis/#ibm-pcon)
+    - [this 的工作原理](http://bonsaiden.github.io/JavaScript-Garden/zh/#function.this)
+
+
+
+* Q: 解释下原型继承的原理。
+
+  A:原型继承的基础是原型链查找。
+  原型链查找基本概念：
+    1. 每一个函数 F 都有一个原型对象（prototype）F.prototype
+    2. 每一个函数都可以通过 new 关键字化身成为一个类构造函数，new F 会产生一个对象 O
+    3. 在调用对象的某个属性或者方法，比如 http://O.xxx 的时候，会首先查找对象自身是否有这个方法或者属性，如果没找到就会去对象的构造函数的原型对象中查找（注意有两个定语），也就是查找 O 的构造函数 F 的原型对象 http://F.prototype.xxx
+    4. F.prototype 也是一个对象，查找 http://F.prototype.xxx 的时候会重复第 3 步的过程
+
+  参考：
+    - [深入理解javascript原型继承](http://www.jianshu.com/p/d2742610ec30#)
+    - [JavaScript原型继承工作原理](http://www.ituring.com.cn/article/56184)
+    - [Prototypal Inheritance in JavaScript](http://javascript.crockford.com/prototypal.html)
+
+* Q: 你是如何测试JavaScript代码的？
+
+* A: AMD vs. CommonJS？
+
+  Q: 可参考: <http://stackoverflow.com/questions/16521471/relation-between-commonjs-amd-and-requirejs>
+
+* Q: 什么是哈希表？
+
+  A: 哈希表是根据关键字（Key value）而直接访问在内存存储位置的数据结构。也就是说，它通过把键值通过一个函数的计算，映射到表中一个位置来访问记录，这加快了查找速度。这个映射函数称做散列函数，存放记录的数组称做散列表。
+
+* Q: 解释下为什么接下来这段代码不是 IIFE(立即调用的函数表达式)：`function foo(){ }();`.
+  * 要做哪些改动使它变成 IIFE?
+
+  A: 可参考 [前端编码风格规范之 JavaScript 规范](http://roshanca.com/2014/web-develop-styleguide-javascript/)
+
+  总是将代码包裹成一个 IIFE(Immediately-Invoked Function Expression)，用以创建独立隔绝的定义域。这一举措可防止全局命名空间被污染。
+
+  IIFE 还可确保你的代码不会轻易被其它全局命名空间里的代码所修改（i.e. 第三方库，window 引用，被覆盖的未定义的关键字等等）。
+
+    不推荐
+    ```
+    var x = 10,
+        y = 100;
+
+    // Declaring variables in the global scope is resulting in global scope pollution. All variables declared like this
+    // will be stored in the window object. This is very unclean and needs to be avoided.
+    console.log(window.x + ' ' + window.y);
+    ```
+    推荐
+    ```
+    // We declare a IIFE and pass parameters into the function that we will use from the global space
+    (function(log, w, undefined){
+      'use strict';
+
+      var x = 10,
+          y = 100;
+
+      // Will output 'true true'
+      log((w.x === undefined) + ' ' + (w.y === undefined));
+
+    }(window.console.log, window));
+    ```
+
+    IIFE（立即执行的函数表达式）:无论何时，想要创建一个新的封闭的定义域，那就用 IIFE。它不仅避免了干扰，也使得内存在执行完后立即释放。
+
+    所有脚本文件建议都从 IIFE 开始。
+
+    立即执行的函数表达式的执行括号应该写在外包括号内。虽然写在内还是写在外都是有效的，但写在内使得整个表达式看起来更像一个整体，因此推荐这么做。
+
+    不推荐
+    ```
+    (function(){})();
+    ```
+
+    推荐
+    ```
+    (function(){}());
+    ```
+    so，用下列写法来格式化你的 IIFE 代码：
+    ```
+    (function(){
+      'use strict';
+
+      // Code goes here
+
+    }());
+    ```
+    如果你想引用全局变量或者是外层 IIFE 的变量，可以通过下列方式传参：
+    ```
+    (function($, w, d){
+      'use strict';
+
+      $(function() {
+        w.alert(d.querySelectorAll('div').length);
+      });
+    }(jQuery, window, document));
+    ```
+
+
+
+* Q: 描述以下变量的区别：`null`，`undefined` 或 `undeclared`？
+  * 该如何检测它们？
+
+
+  A: `undefined`是Js语言类型，而`undeclared`是一种Js语法错误。在JavaScript中，有两个表示‘空’的值`undefined`和`null`，`undefined`是一个值为`undefined` 的类型。JavaScript语言也定义了一个全局变量，它的值是 `undefined`，这个变量也被称为`undefined`。 但是这个变量不是一个常量，也不是一个关键字。这意味着它的值可以轻易被覆盖。为了避免可能对`undefined`值的改变，一个常用的技巧是使用一个传递到匿名包装器的额外参数。在调用时，这个参数不会获取任何值。如下例子：
+
+  ```
+    var undefined = 123;
+    (function(something, foo, undefined) {
+    // 局部作用域里的 undefined 变量重新获得了 `undefined` 值
+    })('Hello World', 42);
+  ```
+
+    待修改。
+
+   - <http://stackoverflow.com/questions/6429225/javascript-null-or-undefined>
+   - <http://www.zhihu.com/question/19966545>
+
+
+* 什么是闭包，如何使用它，为什么要使用它？
+
+* 请举出一个匿名函数的典型用例？
+
+* 解释 “JavaScript 模块模式” 以及你在何时使用它。
+  * 如果有提到无污染的命名空间，可以考虑加分。
+  * 如果你的模块没有自己的命名空间会怎么样？
+
+* 你是如何组织自己的代码？是使用模块模式，还是使用经典继承的方法？
+
+* Q: 请指出 JavaScript 宿主对象和原生对象的区别？
+
+   A: 宿主对象是指DOM和BOM。原生对象是Object、Function、Array、String、Boolean、Number、Date、RegExp、Error、Math等对象。
+
+* Q:指出下列代码的区别：
+
+    ```javascript
+    function Person(){}
+    var person = Person();
+    var person = new Person();
+    ```
+
+  A: 第一行是定义了一个函数 Person()；第二行代码是执行函数 Person() 并将其返回值复制给变量 person，如果 Person() 是一个构造器函数的话，新的对象将不会被创建，并且 this 将被绑定到全局对象上；第三行代码是用构造函数 Person() 构造一个实例对象 person。
+
+
+
+* Q:`.call` 和 `.apply` 的区别是什么？
+
+  A: [关于javascript中apply()和call()方法的区别](http://www.cnblogs.com/fighting_cp/archive/2010/09/20/1831844.html)
+
+* 请解释 `Function.prototype.bind` 的作用？
+
+* 你何时优化自己的代码？
+
+* 你能解释一下 JavaScript 中的继承是如何工作的吗？
+
+* 在什么时候你会使用 `document.write()`？
+    * 大多数生成的广告代码依旧使用 `document.write()`，虽然这种用法会让人很不爽。
+
+* 请指出浏览器特性检测，特性推断和浏览器 UA 字符串嗅探的区别？
+
+* 请尽可能详尽的解释 AJAX 的工作原理。
+
+  Q: Ajax 全称为 Asynchronous JavaScript and XML（异步 JavaScript 和 XML），是一种创建交互式网页应用的网页开发技术。
+    Ajax 的原理简单来说通过 XmlHttpRequest 对象来向服务器发异步请求，从服务器获得数据，然后用 JavaScript来操作 DOM 而更新页面。这其中最关键的一步就是从服务器获得请求数据。
+
+    以往我们浏览网页的原理是由 Client 向 Server 提交页面申请，再由 Server 将申请通过 HTTP 传回给 Client 生成浏览页面：
+
+    ![Ajax 原理图](http://yianbin.qiniudn.com/fe-ajax-a.png)
+
+    使用 Ajax 后的工作原理如下图，可见通过 Ajax 在用户交互方面有了很大改进，用户可以不用为提交了 Form 而长时间等待服务器应答，而且通过 Ajax 也可以开发出华丽的 Web 交互页面。
+
+    ![Ajax 原理图](http://yianbin.qiniudn.com/fe-ajax-b.png)
+
+    转自：[AJAX 的工作原理](https://github.com/infp/Front-end-Interview/blob/master/source/javascript.md#21%E8%AF%B7%E5%B0%BD%E5%8F%AF%E8%83%BD%E8%AF%A6%E5%B0%BD%E7%9A%84%E8%A7%A3%E9%87%8A-ajax-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86)
+
+* 请解释 JSONP 的工作原理，以及它为什么不是真正的 AJAX。
+
+* 你使用过 JavaScript 模板系统吗？
+    * 如有使用过，请谈谈你都使用过哪些库，比如 Mustache.js，Handlebars 等等。
+
+* 请解释变量声明提升。
+
+* 请描述下事件冒泡机制。
+
+* "attribute" 和 "property" 的区别是什么？
+
+* 为什么扩展 JavaScript 内置对象不是好的做法？
+
+* 为什么扩展 JavaScript 内置对象是好的做法？
+
+* 请指出 document load 和 document ready 两个事件的区别。
+
+* Q: `==` 和 `===` 有什么不同？
+
+  A: `==`（相等运算法），`===`（严格相等运算符） JavaScript 对象的比较是引用的比较，非值的比较，对象和其本身相等，和其他任何对象不相等。 `===` 首先计算其操作数的值，然后比较，比较过程无任何类型转换。 `==` 如果两个操作数不是同一类型的，则相等运算符进行一些类型转换进行比较。 `==` 这里截取 [JavaScript 相等表格](http://dorey.github.io/JavaScript-Equality-Table)上的的两张图片让大家更为直观的感受下。
+
+  ![](http://paddingme.qiniudn.com/1396461120383-2.png)
+
+  ![](http://paddingme.qiniudn.com/1396464279990-1.png)
+
+  引用下[温特大大](http://weibo.com/wintercn)的总结就是：**只要记住 `null` 只和`undefined` 相等，有 `number` 都转 `number`，有 `boolean` 也转 `number`，有 `string` 都转 `string`，对象互相不等，`NaN` 互相不等就可以了**。
+
+* 你如何从浏览器的 URL 中获取查询字符串参数。
+
+* 请解释一下 JavaScript 的同源策略。
+
+* 请描述一下 JavaScript 的继承模式。
+
+* 如何实现下列代码：
+```javascript
+[1,2,3,4,5].duplicator(); // [1,2,3,4,5,1,2,3,4,5]
+```
+
+* 描述一种 JavaScript 中实现 memoization(避免重复运算)的策略。
+
+* 什么是三元表达式？“三元” 表示什么意思？
+
+* 函数的参数元是什么？
+
+* 什么是 `"use strict";` ? 使用它的好处和坏处分别是什么？
+
+
+
 #### <a name='fun-questions'>趣味问题：</a>
 
 * 你最近写过什么的很酷的项目吗？
