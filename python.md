@@ -16,7 +16,8 @@ PYTHON开发面试题
 详细说说 tuple、list、dict 的用法，它们的特点；
 
 	三者的用法可参考：http://blog.sina.com.cn/s/blog_540775a30101bhhx.html
-	Tuple 一旦创建即不能进行修改(删除/增加/修改元素)，但是其访问效率较高，且能保护常
+	Tuple 一旦创建即不能进行修改(删
+	除/增加/修改元素)，但是其访问效率较高，且能保护常
 	量数据不被更改，所以适合于存储一些常量数据
 	List 适合于需要动态增删改的数据集，但不适用于需要查找的使用；因为其实现类似于 C
 	中的数组，也不适应于需要经常在 list 之间插入数据的场景。
@@ -344,5 +345,5 @@ list 对象 alist [{'name':'a','age':20},{'name':'b','age':30},{'name':'c','age'
 
 ###题目来源
 
-http://blog.csdn.net/caoxing81/article/details/45970735
-http://bitwolaiye.github.io/blog/2014/01/16/prepare-python-engineer-interview/
+* http://blog.csdn.net/caoxing81/article/details/45970735
+* http://bitwolaiye.github.io/blog/2014/01/16/prepare-python-engineer-interview/
