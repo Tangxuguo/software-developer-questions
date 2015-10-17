@@ -1,8 +1,6 @@
 后端开发面试题
 ===================
 
-#前言
-做这个总结的原因是因为看到了markyun的[前端开发面试题](https://github.com/markyun/My-blog/tree/master/Front-end-Developer-Questions)，索性就把后端开发的也总结一下吧
 
 #后端开发面试知识点大纲：
 ##语言类（C++）：
